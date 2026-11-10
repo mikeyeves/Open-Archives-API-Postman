@@ -1,0 +1,1587 @@
+{
+  "info": {
+    "_postman_id": "91be709e-9f5a-47d4-9f45-901f4eb4b375",
+    "name": "Open Archives (openarchieven.nl) API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Open Archives API v1.1 — search hundreds of millions of indexed genealogical records (civil registration, church books, population registers, notarial, military, emigration…) from Dutch, Belgian, German, French and other archives, plus page transcriptions, statistics, Dutch census context and historical weather. No key. Throttled to 4 requests/second per IP; please keep a descriptive User-Agent (set in the collection pre-request script).\n\nGenerated from the official OpenAPI spec: https://www.openarchieven.nl/api/openapi.json · Docs: https://www.openarchieven.nl/api/docs/"
+  },
+  "auth": {
+    "type": "noauth"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.upsert({key:'User-Agent',value:'GenealogyPostman/1.0 (+https://github.com/mikeyeves/Open-Archives-API-Postman)'});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if(pm.response.code===429) console.warn('Open Archives throttle: 4 requests/second per IP.');"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "★ Research searches",
+      "id": "9e635605-40b7-49bb-a3f8-23081aa6bc8f",
+      "item": [
+        {
+          "name": "Bukovszky (any record)",
+          "id": "73ecc86d-6648-477f-9bdb-96a2c1c9af69",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/search.json?name=Bukovszky&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Bukovszky"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "2 hits at build time (French INSEE death index; Reclaim The Records US index)."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Bukovsky",
+          "id": "5ed2c266-a2b9-4d42-b09e-eade2d186a14",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/search.json?name=Bukovsky&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Bukovsky"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Barna",
+          "id": "c4139bec-8838-471a-925d-c06a73622d8b",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/search.json?name=Barna&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Barna"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Krüpl / Krupl",
+          "id": "4f96a75f-7309-4caa-a955-46bf45ce1325",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/search.json?name=Krüpl&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Krüpl"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Also try Krupl, Kruepl."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Name + place + period (syntax demo)",
+          "id": "8101e477-646e-4291-a295-33a013c9f128",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/search.json?name={{name}} 1880-1910&eventplace={{place}}&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{name}} 1880-1910"
+                },
+                {
+                  "key": "eventplace",
+                  "value": "{{place}}"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "The name field accepts two names and a year or period, e.g. \"Coret 1800-1850\". Advanced syntax: https://www.openarchieven.nl/"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Only one source type, sorted",
+          "id": "02070c83-e102-4139-a0b0-76f70f16c0a3",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/search.json?name={{name}}&sourcetype=Civil registration marriages&sort=4&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{name}}"
+                },
+                {
+                  "key": "sourcetype",
+                  "value": "Civil registration marriages"
+                },
+                {
+                  "key": "sort",
+                  "value": "4"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "sourcetype values come from Stats → \"Record count statistics per source type\". sort: 1 Name, 2 Role, 3 Event, 4 Date, 5 Place, 6 Source (negative = descending)."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Records",
+      "id": "e5c9dc39-33be-4104-bfa9-2a9cddc4b3ff",
+      "item": [
+        {
+          "name": "Search genealogical records",
+          "id": "8a0d6a0e-21da-4eae-9b0c-5f31ad669496",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/search.json?name={{name}}&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{name}}",
+                  "disabled": false,
+                  "description": "(required) Search query. Can include two names separated by `&` and a year or period. See https://www.openarchieven.nl/ for advanced query syntax.\n"
+                },
+                {
+                  "key": "archive_code",
+                  "value": "bhi",
+                  "disabled": true,
+                  "description": "Filter results on a specific archive. Obtain valid archive codes via the Stats/Archives endpoint.\n"
+                },
+                {
+                  "key": "not_archive",
+                  "value": "1",
+                  "disabled": true,
+                  "description": "When set to `1` in combination with `archive_code`, results from the selected archive are excluded instead of the search being restricted to it. Has no effect without `archive_code`.\n Allowed: 0 | 1"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Number of results to return. Maximum is 100."
+                },
+                {
+                  "key": "sourcetype",
+                  "value": "Civil registration marriages",
+                  "disabled": true,
+                  "description": "Filter results on source type. Obtain valid source types via the Stats/Sources endpoint.\n"
+                },
+                {
+                  "key": "eventplace",
+                  "value": "Amsterdam",
+                  "disabled": true,
+                  "description": "Filter results on event place."
+                },
+                {
+                  "key": "birthplace",
+                  "value": "Rotterdam",
+                  "disabled": true,
+                  "description": "Filter results on birth place of the person."
+                },
+                {
+                  "key": "relationtype",
+                  "value": "Bride",
+                  "disabled": true,
+                  "description": "Filter results on relation type (e.g. Bride, Groom, Registered)."
+                },
+                {
+                  "key": "country_code",
+                  "value": "nl",
+                  "disabled": true,
+                  "description": "Filter results on country. Available codes: nl, be, fr, sr, etc."
+                },
+                {
+                  "key": "sort",
+                  "value": "4",
+                  "disabled": true,
+                  "description": "Column to sort results on. Use a negative value to sort descending, positive to sort ascending. 1=Name, 2=Role, 3=Event, 4=Date, 5=Place, 6=Source.\n Allowed: -6 | -5 | -4 | -3 | -2 | -1 | 1 | 2 | 3 | 4 | 5 | 6"
+                },
+                {
+                  "key": "start",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Initial result offset for paging. Deep pagination is not supported: the maximum allowed value is 10000. Requests with `start` greater than 10000 are rejected with HTTP 400 (error_code 50)."
+                },
+                {
+                  "key": "lang",
+                  "value": "en",
+                  "disabled": true,
+                  "description": "Language code. Affects archive name, sourcetype, relationtype and eventtype labels in the response.\n Allowed: nl | en"
+                }
+              ]
+            },
+            "description": "Searches the genealogical dataset and returns found persons and records. Supports filtering by archive, source type, event place, birth place, relation type and country. Results are pageable and sortable. Note: version 1.1 uses `archive_code` instead of `archive`.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Show a single genealogical record",
+          "id": "e0a4c908-419b-4c49-9167-5ef737d00cfd",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/show.json?archive={{archive}}&identifier={{identifier}}",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "show.json"
+              ],
+              "query": [
+                {
+                  "key": "archive",
+                  "value": "{{archive}}",
+                  "disabled": false,
+                  "description": "(required) Code of the archive holding the record. Obtain valid archive codes via the Stats/Archives endpoint.\n"
+                },
+                {
+                  "key": "identifier",
+                  "value": "{{identifier}}",
+                  "disabled": false,
+                  "description": "(required) Unique identifier (UUID) of the record."
+                },
+                {
+                  "key": "lang",
+                  "value": "en",
+                  "disabled": true,
+                  "description": "Language code. Affects archive name, sourcetype, relationtype and eventtype labels in the JSON response.\n Allowed: nl | en"
+                }
+              ]
+            },
+            "description": "Returns one specific genealogical record in JSON format (UTF-8). The response conforms to the Archive 2 All (A2A) model. Also available as XML, GEDCOM, Turtle (TTL), N-Triples (NT) and Markdown (MD, a compact human- and AI-readable summary with the canonical record URL) by changing the file extension in the URL. On the website the same formats are reachable as https://www.openarchieven.nl/{archive}:{identifier}/md (and /json, /xml, /ttl, /gedcom). Note: version 1.1 features improved JSON/XML output and adds N-Triples and Turtle formats.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Match a person to birth and death records",
+          "id": "595ffebc-36e2-4a5f-9d4f-4a76cc86ca62",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/match.json?name={{name}}&birthyear={{birthyear}}",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "match.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{name}}",
+                  "disabled": false,
+                  "description": "(required) Full name of the person. No special operators are available."
+                },
+                {
+                  "key": "birthyear",
+                  "value": "{{birthyear}}",
+                  "disabled": false,
+                  "description": "(required) Year of birth as a numerical value."
+                },
+                {
+                  "key": "lang",
+                  "value": "en",
+                  "disabled": true,
+                  "description": "Language code. Affects eventtype, sourcetype and archive labels in the response.\n Allowed: nl | en"
+                }
+              ]
+            },
+            "description": "Searches the genealogical dataset by exact name and birth year and returns the Open Archives URIs of birth records, death records and registrations in which the person is mentioned.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "List births that occurred a specified number of years ago",
+          "id": "fdf3b6b3-03c9-4fe6-8c8a-654829267764",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/yearsago.json?years=100&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "yearsago.json"
+              ],
+              "query": [
+                {
+                  "key": "years",
+                  "value": "100",
+                  "disabled": false,
+                  "description": "(required) Number of years ago (the date is calculated from today)."
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of results per page to return."
+                }
+              ]
+            },
+            "description": "Returns a list of birth records for people born exactly the specified number of years ago from today. Note: version 1.1 uses `archive_code` instead of `archive` and includes the archive name and record URL.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Finds birth records",
+          "id": "9c503d7c-8764-4b87-bdc0-f505f7d5a725",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/getBirths.json?name={{name}}&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "getBirths.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{name}}",
+                  "disabled": false,
+                  "description": "(required) name of the person on the birth certificate"
+                },
+                {
+                  "key": "eventyear",
+                  "value": "",
+                  "disabled": true,
+                  "description": "year of birth of the person"
+                },
+                {
+                  "key": "eventplace",
+                  "value": "",
+                  "disabled": true,
+                  "description": "place of birth of the person"
+                },
+                {
+                  "key": "eventprovince",
+                  "value": "",
+                  "disabled": true,
+                  "description": "province in which the birth took place"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of results per page to return."
+                },
+                {
+                  "key": "start",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Initial result offset for paging. Deep pagination is not supported: the maximum allowed value is 10000. Requests with `start` greater than 10000 are rejected with HTTP 400 (error_code 50)."
+                }
+              ]
+            },
+            "description": "Finds birth records\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Finds death records",
+          "id": "7d7f1efa-187a-4971-9012-f8cc40b24b55",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/getDeaths.json?name={{name}}&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "getDeaths.json"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{name}}",
+                  "disabled": false,
+                  "description": "(required) name of the person on the death certificate"
+                },
+                {
+                  "key": "eventyear",
+                  "value": "",
+                  "disabled": true,
+                  "description": "year of death of the person"
+                },
+                {
+                  "key": "eventplace",
+                  "value": "",
+                  "disabled": true,
+                  "description": "place of death of the person"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of results per page to return."
+                },
+                {
+                  "key": "start",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Initial result offset for paging. Deep pagination is not supported: the maximum allowed value is 10000. Requests with `start` greater than 10000 are rejected with HTTP 400 (error_code 50)."
+                }
+              ]
+            },
+            "description": "Finds death records\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Finds marriage records of couples (bride or groom)",
+          "id": "a09ea588-46ac-4799-8abb-3f459546c2ee",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/records/getMarriages.json?name1={{name}}&name2={{name2}}&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "records",
+                "getMarriages.json"
+              ],
+              "query": [
+                {
+                  "key": "name1",
+                  "value": "{{name}}",
+                  "disabled": false,
+                  "description": "(required) name of the first person (bride or groom) on the marriage certificate"
+                },
+                {
+                  "key": "name2",
+                  "value": "{{name2}}",
+                  "disabled": false,
+                  "description": "(required) name of the second person (bride or groom) on the marriage certificate"
+                },
+                {
+                  "key": "eventyear",
+                  "value": "",
+                  "disabled": true,
+                  "description": "year the bride and groom married"
+                },
+                {
+                  "key": "eventplace",
+                  "value": "",
+                  "disabled": true,
+                  "description": "place where the  bride and groom were married"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of results per page to return."
+                },
+                {
+                  "key": "start",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Initial result offset for paging. Deep pagination is not supported: the maximum allowed value is 10000. Requests with `start` greater than 10000 are rejected with HTTP 400 (error_code 50)."
+                }
+              ]
+            },
+            "description": "Finds marriage records of couples (bride or groom)\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let j={};try{j=pm.response.json();}catch(e){}",
+                  "const r=j.response||j;const docs=r.docs||[];",
+                  "const f=v=>v==null?'':(typeof v==='object'?(v.year?[v.day,v.month,v.year].filter(Boolean).join('-'):JSON.stringify(v)):String(v));",
+                  "const rows=docs.map(d=>[d.url?`<a href=\"${d.url}\">${d.personname||''}</a>`:(d.personname||''),d.relationtype||'',d.eventtype||'',f(d.eventdate),[].concat(d.eventplace||[]).join(', '),d.sourcetype||'',d.archive_org||d.archive||'',(d.archive||'')+' / '+(d.identifier||'')]);",
+                  "pm.visualizer.set(`<style>table{border-collapse:collapse;font:13px sans-serif}td,th{border:1px solid #ccc;padding:4px 8px}th{background:#eee}</style><p>{{n}} found</p><table><tr><th>Person</th><th>Role</th><th>Event</th><th>Date</th><th>Place</th><th>Source</th><th>Archive</th><th>archive / identifier</th></tr>{{#each rows}}<tr>{{#each this}}<td>{{{this}}}</td>{{/each}}</tr>{{/each}}</table>`,{rows,n:r.number_found});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Transcriptions",
+      "id": "b97ac1d2-f6d5-4dd2-8645-320cdadc9625",
+      "item": [
+        {
+          "name": "Full-text search across page transcriptions",
+          "id": "13bc5fa6-e40e-4ce5-927a-6f0af6fce3c1",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/transcriptions/search.json?q={{query}}&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "transcriptions",
+                "search.json"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "{{query}}",
+                  "disabled": false,
+                  "description": "(required) Search query. Wrap in double quotes for an exact phrase match; include `*` or `?` for wildcard matching; otherwise the words are combined with an `AND` operator. Special characters `[ ] ( ) { } ^ + = ! ~ : - /` are stripped before searching.\n"
+                },
+                {
+                  "key": "archive_code",
+                  "value": "hua",
+                  "disabled": true,
+                  "description": "Filter results to one source archive. Use the openarch archive code (e.g. `utr`, `sch`); the API maps this to the corresponding ISIL internally. Obtain valid codes via Stats/Archives.\n"
+                },
+                {
+                  "key": "archive_number",
+                  "value": "67",
+                  "disabled": true,
+                  "description": "Filter results to one archive number (archieftoegang) within the chosen `archive_code`. Only meaningful when `archive_code` is also supplied.\n"
+                },
+                {
+                  "key": "inventory_number",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Filter results to one inventory number within the chosen `archive_number`. Only meaningful when both `archive_code` and `archive_number` are also supplied.\n"
+                },
+                {
+                  "key": "year_start",
+                  "value": "1700",
+                  "disabled": true,
+                  "description": "Filter on the start year (`inventaris.jaar_van`) of the inventory the page belongs to. Pages themselves carry no date.\n"
+                },
+                {
+                  "key": "year_end",
+                  "value": "1750",
+                  "disabled": true,
+                  "description": "Filter on the end year of the inventory the page belongs to."
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Number of results to return per page. Maximum is 100."
+                },
+                {
+                  "key": "start",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Result offset for paging."
+                },
+                {
+                  "key": "lang",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Language code used to localise archive names in the response. Allowed: nl | en | de | fr"
+                }
+              ]
+            },
+            "description": "Performs a full-text search across the page transcriptions of historical documents indexed by Open Archives. Mirrors the search UI at `/transcripties/zoek.php`. Results are ordered by Elasticsearch relevance (the order is fixed and cannot be overridden) and are returned paginated. Each match includes a source citation, page identifier and up to five highlighted text fragments. The set of facets returned depends on the supplied filters.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Browse transcriptions hierarchically",
+          "id": "e057f1fe-8469-437f-87d5-71c058c7e687",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/transcriptions/browse.json",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "transcriptions",
+                "browse.json"
+              ],
+              "query": [
+                {
+                  "key": "archive_code",
+                  "value": "hua",
+                  "disabled": true,
+                  "description": "openarch archive code (e.g. `utr`, `sch`). When omitted, the top-level list of source archives is returned.\n"
+                },
+                {
+                  "key": "archive_number",
+                  "value": "67",
+                  "disabled": true,
+                  "description": "Archive number (archieftoegang) within the chosen `archive_code`. Only meaningful when `archive_code` is also supplied.\n"
+                },
+                {
+                  "key": "lang",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Language code used to localise archive names in the response. Allowed: nl | en | de | fr"
+                }
+              ]
+            },
+            "description": "Returns a hierarchical browse of available page transcriptions. Mirrors `/transcripties/lijst/`. Three modes, depending on the supplied filters:\n\n  * No filter — top-level list of source archives ordered by total\n    transcription count (descending).\n  * `archive_code` — list of all archive numbers (archieftoegangen)\n    within that archive, ordered by archive number.\n  * `archive_code` + `archive_number` — list of all inventories\n    within that archive number, ordered by inventory number.\n\nThe order of items is fixed and cannot be overridden. Results are always returned in full (no paging).\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Retrieve a single transcription",
+          "id": "28cdb73e-f744-474e-b4f5-e2bf13bcf13e",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/transcriptions/show.json?id={{transcription_id}}",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "transcriptions",
+                "show.json"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{transcription_id}}",
+                  "disabled": false,
+                  "description": "(required) Page identifier in the form `<ISIL>_<archive_number>_<page>`, e.g. `NL-SdmGA_1504889_11`.\n"
+                },
+                {
+                  "key": "lang",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Language code used to localise the archive name in the response. Allowed: nl | en | de | fr"
+                }
+              ]
+            },
+            "description": "Returns the full transcript of a single page along with its source citation. Mirrors `/transcripties/toon/<id>`. AI-generated summaries are deliberately not returned by this endpoint.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stats",
+      "id": "e925862d-b185-4c2d-b290-3161e526fe6b",
+      "item": [
+        {
+          "name": "List all archives with statistics",
+          "id": "aab1fc1f-ee69-4d31-afec-efea1d6fb435",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/archives.json",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "archives.json"
+              ],
+              "query": []
+            },
+            "description": "Returns an array of all participating archives including their archive code (used in other API calls), name, homepage URL, Twitter handle, ISIL code and search URL on Open Archives. Note: version 1.1 adds ISIL codes and removes defunct ArchiefWiki links.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Record count statistics per archive",
+          "id": "cbdcefde-342f-439b-94cb-dcd45800e8f5",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/records.json",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "records.json"
+              ],
+              "query": [
+                {
+                  "key": "archive_code",
+                  "value": "elo",
+                  "disabled": true,
+                  "description": "Code of the archive to filter on. Obtain valid codes via the Stats/Archives endpoint.\n"
+                }
+              ]
+            },
+            "description": "Returns record count statistics. When no archive is specified, all archives are listed with their total number of records. When an archive code is specified, the source types available for that archive are returned with their individual record counts. Note: version 1.1 uses `archive_code` instead of `archive`.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Record count statistics per source type",
+          "id": "68aeeb04-4693-4030-8282-fbe82896209c",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/sources.json",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "sources.json"
+              ],
+              "query": [
+                {
+                  "key": "archive_code",
+                  "value": "saa",
+                  "disabled": true,
+                  "description": "Code of the archive to filter on. Obtain valid codes via the Stats/Archives endpoint.\n"
+                }
+              ]
+            },
+            "description": "Returns statistics about source types. Without an archive_code all source types across the entire dataset are returned with total record counts. With an archive_code, only source types for that archive are returned. Note: version 1.1 uses `archive_code` instead of `archive`.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Record count statistics per event type",
+          "id": "10c2b1bb-bba5-4f1b-860d-54e7dd7f256e",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/events.json",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "events.json"
+              ],
+              "query": [
+                {
+                  "key": "archive_code",
+                  "value": "saa",
+                  "disabled": true,
+                  "description": "Code of the archive to filter on. Obtain valid codes via the Stats/Archives endpoint.\n"
+                }
+              ]
+            },
+            "description": "Returns statistics about event types. Without an archive_code all event types across the entire dataset are returned with total counts. With an archive_code, only event types for that archive are returned. Note: version 1.1 uses `archive_code` instead of `archive`.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Comment count statistics",
+          "id": "9ec82731-ee98-45de-ba91-c7804625ec7d",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/comments.json",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "comments.json"
+              ],
+              "query": [
+                {
+                  "key": "archive_code",
+                  "value": "elo",
+                  "disabled": true,
+                  "description": "Code of the archive to filter on. Obtain valid codes via the Stats/Archives endpoint.\n"
+                }
+              ]
+            },
+            "description": "Returns the total number of validated comments made on records. When no archive_code is provided, the global total is returned. When an archive code is provided, the count for that archive is returned. Note: version 1.1 uses `archive_code` instead of `archive`.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Family name frequency statistics",
+          "id": "66858dd9-e250-4bfd-8a2e-7d9bd13b4341",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/familynames.json?number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "familynames.json"
+              ],
+              "query": [
+                {
+                  "key": "eventplace",
+                  "value": "Amsterdam",
+                  "disabled": true,
+                  "description": "Existing place name to filter on."
+                },
+                {
+                  "key": "eventyearstart",
+                  "value": "1800",
+                  "disabled": true,
+                  "description": "Starting year of events to include. Minimum is 1500."
+                },
+                {
+                  "key": "eventyearend",
+                  "value": "1900",
+                  "disabled": true,
+                  "description": "Ending year of events to include. Maximum is 1960."
+                },
+                {
+                  "key": "eventtype",
+                  "value": "2",
+                  "disabled": true,
+                  "description": "Numeric value for the event type to filter on. 0=All types, 1=Christening and birth records, 2=Marriage records, 3=Burial and death records, 6=Notarial deeds.\n Allowed: 0 | 1 | 2 | 3 | 6"
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of results per page to return."
+                },
+                {
+                  "key": "lang",
+                  "value": "en",
+                  "disabled": true,
+                  "description": "Language code for data labels. Allowed: nl | en | de | fr"
+                }
+              ]
+            },
+            "description": "Returns the number of times family names appear in events for the selected source types, place and period. Results are ordered by frequency. Open Archives uses this endpoint to power its family name frequency visualisation.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "First name frequency statistics for a given place and year",
+          "id": "6c03b1da-f674-427e-b6f2-2c8955aa3a17",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/firstnames.json?eventplace={{place}}&eventyear={{year}}&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "firstnames.json"
+              ],
+              "query": [
+                {
+                  "key": "eventplace",
+                  "value": "{{place}}",
+                  "disabled": false,
+                  "description": "(required) Existing place name. Currently only `Amsterdam` is available.\n"
+                },
+                {
+                  "key": "eventyear",
+                  "value": "{{year}}",
+                  "disabled": false,
+                  "description": "(required) The year of events to include. Must be between 1600 and 1960."
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of results per page to return."
+                }
+              ]
+            },
+            "description": "Returns the top-X list of first names in the specified place and year. When a person has multiple forenames, only the first is counted. Currently only Amsterdam is available as a place.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Profession frequency statistics",
+          "id": "ad9b6d17-96c6-4fc7-bf0b-64a41808cfb6",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/professions.json?number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "professions.json"
+              ],
+              "query": [
+                {
+                  "key": "eventplace",
+                  "value": "Amsterdam",
+                  "disabled": true,
+                  "description": "Existing place name to filter on."
+                },
+                {
+                  "key": "eventyearstart",
+                  "value": "1800",
+                  "disabled": true,
+                  "description": "Starting year of events to include. Minimum is 1500."
+                },
+                {
+                  "key": "eventyearend",
+                  "value": "1900",
+                  "disabled": true,
+                  "description": "Ending year of events to include. Maximum is 1960."
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of results per page to return."
+                },
+                {
+                  "key": "lang",
+                  "value": "en",
+                  "disabled": true,
+                  "description": "Language code for data labels. Allowed: nl | en | de | fr"
+                }
+              ]
+            },
+            "description": "Returns the number of times professions appear in records for the selected period and place. Results are ordered by frequency. Open Archives uses this endpoint to power its profession frequency visualisation.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Cross-tabulation aggregation grouped by one dimension",
+          "id": "59800cad-1355-4d7a-bb24-2f80ef4ef4b7",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/stats/breakdown.json?group_by=eventtype&number_show=50",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "stats",
+                "breakdown.json"
+              ],
+              "query": [
+                {
+                  "key": "group_by",
+                  "value": "eventtype",
+                  "disabled": false,
+                  "description": "(required) Dimension to aggregate on. Allowed: archive | sourcetype | eventtype | place | year"
+                },
+                {
+                  "key": "archive_code",
+                  "value": "elo",
+                  "disabled": true,
+                  "description": "Archive code to filter on. Prefix with `!` to negate (e.g. `!saa` excludes Stadsarchief Amsterdam).\n"
+                },
+                {
+                  "key": "sourcetype",
+                  "value": "Bidprentjesverzameling",
+                  "disabled": true,
+                  "description": "Source type to filter on. Multiple source types can be combined with ` & ` (space, ampersand, space), matching the convention of `/records/search.json`.\n"
+                },
+                {
+                  "key": "eventtype",
+                  "value": "2",
+                  "disabled": true,
+                  "description": "Event type filter. 0=all, 1=Birth/Christening, 2=Marriage, 3=Death/Burial, 6=Notarial deeds (matches the mapping used by `/stats/familynames.json`).\n Allowed: 0 | 1 | 2 | 3 | 6"
+                },
+                {
+                  "key": "eventplace",
+                  "value": "Amsterdam",
+                  "disabled": true,
+                  "description": "Event place to filter on (exact match)."
+                },
+                {
+                  "key": "year_start",
+                  "value": "1700",
+                  "disabled": true,
+                  "description": "Starting year of events to include. Minimum 1500. Alias `eventyearstart` is also accepted."
+                },
+                {
+                  "key": "year_end",
+                  "value": "1811",
+                  "disabled": true,
+                  "description": "Ending year of events to include. Maximum 1960. Alias `eventyearend` is also accepted."
+                },
+                {
+                  "key": "min_count",
+                  "value": "10",
+                  "disabled": true,
+                  "description": "Exclude groups with fewer records than this threshold."
+                },
+                {
+                  "key": "number_show",
+                  "value": "50",
+                  "disabled": false,
+                  "description": "Maximum number of groups returned. Maximum is 500."
+                },
+                {
+                  "key": "sort",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Order of the returned groups. `count_desc` (default) and `count_asc` sort by count; `name_asc` sorts alphabetically by `key` (raw facet value).\n Allowed: count_desc | count_asc | name_asc"
+                },
+                {
+                  "key": "lang",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Language for human-readable labels (sourcetype and eventtype groups only). Only `nl` and `en` produce localised labels; `de` and `fr` are accepted but currently fall back to Dutch.\n Allowed: nl | en | de | fr"
+                }
+              ]
+            },
+            "description": "Returns record counts filtered by any combination of archive, source type, event type, event place and year range, grouped by ONE chosen dimension (archive, sourcetype, eventtype, place or year). Use this endpoint to answer questions such as \"how many Bidprentjes per archive?\" or \"how many marriages per year in Amsterdam?\". The response includes the total filtered record count, the total number of distinct groups (capped at 750) and the top-N groups according to the chosen sort.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Related",
+      "id": "a8ceee72-4f94-4a53-a461-fa7afa52bba4",
+      "item": [
+        {
+          "name": "Historical weather measurements for a date and location",
+          "id": "4f6b9558-b0cb-4ac3-b887-9511f2f7973c",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/related/weather.json?date=1905-03-11&longitude=4.89&latitude=52.37",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "related",
+                "weather.json"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "1905-03-11",
+                  "disabled": false,
+                  "description": "(required) Date in `YYYY-MM-DD` format."
+                },
+                {
+                  "key": "longitude",
+                  "value": "4.89",
+                  "disabled": false,
+                  "description": "(required) Longitude used to find the nearest weather station (e.g. 52.1)."
+                },
+                {
+                  "key": "latitude",
+                  "value": "52.37",
+                  "disabled": false,
+                  "description": "(required) Latitude used to find the nearest weather station (e.g. 4.3)."
+                },
+                {
+                  "key": "lang",
+                  "value": "en",
+                  "disabled": true,
+                  "description": "Language code for data labels. Allowed: nl | en"
+                }
+              ]
+            },
+            "description": "Returns historical weather measurements from the nearest Dutch weather station for the specified date and coordinates. Data sources are the Royal Netherlands Meteorological Institute (KNMI): measurements 1701–1905 and 1901–2014. Note: this endpoint exposes several types of historical datasets, so measurement types and units can vary between records.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        },
+        {
+          "name": "Dutch census data for a place and year",
+          "id": "a7e3e3bc-7dde-4d74-97e6-8e5f8ac7af19",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{oa_api}}/related/census.json?year=1899",
+              "host": [
+                "{{oa_api}}"
+              ],
+              "path": [
+                "related",
+                "census.json"
+              ],
+              "query": [
+                {
+                  "key": "year",
+                  "value": "1899",
+                  "disabled": false,
+                  "description": "(required) A year between 1770 and 1980 (inclusive). The nearest available census year will be selected automatically.\n"
+                },
+                {
+                  "key": "place",
+                  "value": "leiden",
+                  "disabled": true,
+                  "description": "Name of the place (case-insensitive). If both `place` and `gg_uri` are provided, only `gg_uri` is used. Either `place` or `gg_uri` is required.\n"
+                },
+                {
+                  "key": "province",
+                  "value": "Zuid-Holland",
+                  "disabled": true,
+                  "description": "Name of the province (case-sensitive) to narrow down place searches. Note: province names are stored as they were at census time, e.g. `Holland`, `Bataafsch Braband`, `Vriesland`.\n"
+                },
+                {
+                  "key": "gg_uri",
+                  "value": "http://www.gemeentegeschiedenis.nl/gemeentenaam/Leiden",
+                  "disabled": true,
+                  "description": "Gemeentegeschiedenis URI (case-sensitive) for the municipality, e.g. `http://www.gemeentegeschiedenis.nl/gemeentenaam/Leiden`. Either `place` or `gg_uri` is required. Approximately 85% of places have been mapped to a Gemeentegeschiedenis URI.\n"
+                },
+                {
+                  "key": "richness",
+                  "value": "3",
+                  "disabled": true,
+                  "description": "Level of detail in the response. 1=basic information and population number only, 2=like 1 plus all available census data, 3=like 2 plus aggregated data per province.\n Allowed: 1 | 2 | 3"
+                }
+              ]
+            },
+            "description": "Retrieves census data for a Dutch place or municipality for the census year nearest to the specified year. Available census years: 1795, 1830, 1840, 1849, 1859, 1869, 1879, 1889, 1899. Data sources: Volkstellingen.nl (DANS) and Gemeentegeschiedenis.nl. Either `place` or `gg_uri` must be provided.\n\n\nDocs: https://www.openarchieven.nl/api/docs/"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "oa_api",
+      "value": "https://api.openarchieven.nl/1.1",
+      "type": "string"
+    },
+    {
+      "key": "name",
+      "value": "Bukovszky",
+      "type": "string"
+    },
+    {
+      "key": "name2",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "birthyear",
+      "value": "1886",
+      "type": "string"
+    },
+    {
+      "key": "place",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "year",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "archive",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "identifier",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "query",
+      "value": "Bukovszky",
+      "type": "string"
+    },
+    {
+      "key": "transcription_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
